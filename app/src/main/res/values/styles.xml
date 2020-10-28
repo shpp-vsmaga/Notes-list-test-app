@@ -1,0 +1,23 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="titleTextColor">@color/color_white</item>
+        <item name="subtitleTextColor">@color/color_inactive_grey_text</item>
+    </style>
+
+    <style name="Base" />
+
+    <style name="Base.Button" parent="Base">
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/btn_material_selector</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/button_text_color_selector</item>
+    </style>
+
+</resources>

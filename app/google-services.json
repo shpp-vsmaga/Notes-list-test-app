@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "827959938376",
+    "firebase_url": "https://mif-notes-list.firebaseio.com",
+    "project_id": "mif-notes-list",
+    "storage_bucket": "mif-notes-list.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827959938376:android:fba7bf2e9309e2a824b77d",
+        "android_client_info": {
+          "package_name": "com.noteslist.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827959938376-0fgd0t199sone18virhc6sj1n8tvqpgt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noteslist.app",
+            "certificate_hash": "d1994a841359c7fb187b8b8003f55d69a98c3ff4"
+          }
+        },
+        {
+          "client_id": "827959938376-9ptkkdiucdfahortm83icgtss4egdg95.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFw4xFzLxtIQBNKXtg4LBWNy_NGfO7Fyo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827959938376-9ptkkdiucdfahortm83icgtss4egdg95.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

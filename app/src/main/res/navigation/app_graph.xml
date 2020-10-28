@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/app_graph"
+    android:label="app_graph"
+    app:startDestination="@id/splashScreenFragment">
+
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.noteslist.app.screens.splash.ui.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash_screen" />
+
+    <fragment
+        android:id="@+id/authScreenFragment"
+        android:name="com.noteslist.app.screens.auth.ui.AuthScreenFragment"
+        android:label="authScreenFragment"
+        tools:layout="@layout/fragment_auth" >
+        <action
+            android:id="@+id/action_authScreenFragment_to_notesScreenFragment"
+            app:destination="@id/notesScreenFragment"
+            app:popUpTo="@id/app_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/notesScreenFragment"
+        android:name="com.noteslist.app.screens.notes.ui.NotesScreenFragment"
+        android:label="notesScreenFragment"
+        tools:layout="@layout/fragment_notes" >
+        <action
+            android:id="@+id/action_notesScreenFragment_to_authScreenFragment"
+            app:destination="@id/authScreenFragment"
+            app:popUpTo="@id/app_graph"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+</navigation>
