@@ -1,8 +1,10 @@
 package com.noteslist.app.notes.gateway
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.noteslist.app.notes.models.FirebaseDbKeys.COLLECTION_NOTES
+import com.noteslist.app.notes.models.FirebaseDbKeys.COLLECTION_USER_NOTES
 import com.noteslist.app.notes.models.FirebaseDbKeys.FIELD_TEXT
 import com.noteslist.app.notes.models.Note
 import io.reactivex.Completable
@@ -13,11 +15,12 @@ class NotesFirebaseGateway(
     private val db: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth
 ) : NotesRemoteGateway {
-    override fun getNotes(): Flowable<List<Note>> =
-        Flowable.generate { emitter ->
+    override fun getNotes(): Single<List<Note>> =
+        Single.create { emitter ->
             val userId = firebaseAuth.currentUser?.uid
             if (userId != null) {
-                val notesRef = db.document(userId).collection(COLLECTION_NOTES)
+                val notesRef = db.collection(COLLECTION_NOTES).document(userId)
+                    .collection(COLLECTION_USER_NOTES)
                 notesRef.addSnapshotListener { snapshot, e ->
                     if (e != null) {
                         emitter.onError(e)
@@ -30,9 +33,9 @@ class NotesFirebaseGateway(
                                 text = it[FIELD_TEXT] as String
                             )
                         }
-                        emitter.onNext(notes)
+                        emitter.onSuccess(notes)
                     } else {
-                        emitter.onNext(emptyList())
+                        emitter.onSuccess(emptyList())
                     }
                 }
             } else {
@@ -43,8 +46,10 @@ class NotesFirebaseGateway(
     override fun addNote(text: String): Single<Note> =
         Single.create { emitter ->
             val userId = firebaseAuth.currentUser?.uid
+            Log.d("svcom", "add note - ${userId}")
             if (userId != null) {
-                val notesRef = db.document(userId).collection(COLLECTION_NOTES)
+                val notesRef = db.collection(COLLECTION_NOTES).document(userId)
+                    .collection(COLLECTION_USER_NOTES)
                 notesRef.add(
                     mapOf(FIELD_TEXT to text)
                 ).addOnCompleteListener {
@@ -72,7 +77,8 @@ class NotesFirebaseGateway(
         Single.create { emitter ->
             val userId = firebaseAuth.currentUser?.uid
             if (userId != null) {
-                val noteRef = db.document(userId).collection(COLLECTION_NOTES).document(note.id)
+                val noteRef = db.collection(COLLECTION_NOTES).document(userId)
+                    .collection(COLLECTION_USER_NOTES).document(note.id)
                 noteRef.set(mapOf(FIELD_TEXT to note.text))
                     .addOnCompleteListener {
                         it.exception?.let { error ->
@@ -93,7 +99,8 @@ class NotesFirebaseGateway(
         Completable.create { emitter ->
             val userId = firebaseAuth.currentUser?.uid
             if (userId != null) {
-                val noteRef = db.document(userId).collection(COLLECTION_NOTES).document(id)
+                val noteRef = db.collection(COLLECTION_NOTES).document(userId)
+                    .collection(COLLECTION_USER_NOTES).document(id)
                 noteRef.delete().addOnCompleteListener {
                     it.exception?.let { error ->
                         emitter.onError(error)

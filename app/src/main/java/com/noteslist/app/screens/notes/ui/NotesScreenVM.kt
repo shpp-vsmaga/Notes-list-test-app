@@ -1,31 +1,24 @@
 package com.noteslist.app.screens.notes.ui
 
 import androidx.lifecycle.LiveData
-import com.noteslist.app.auth.useCases.AuthUseCases
-import com.noteslist.app.common.arch.BaseViewModel
+import com.noteslist.app.common.arch.BaseVM
 import com.noteslist.app.common.livedata.SingleLiveEvent
+import com.noteslist.app.notes.models.Note
 
-class NotesScreenVM(private val authUseCases: AuthUseCases) : BaseViewModel() {
+interface NotesScreenVM : BaseVM {
+    val notesAction: LiveData<NotesScreenAction>
+    val openEditNoteAction: LiveData<Note>
+    val notesListData: LiveData<List<Note>>
 
-    private val _notesEvent = SingleLiveEvent<NotesActions>()
-    val notesEvent: LiveData<NotesActions>
-        get() = _notesEvent
+    fun logout()
 
+    fun addNote()
 
-    fun logout() {
-        authUseCases.logout()
-            .subscribe({
-                _notesEvent.value = NotesActions.LOGOUT
-            }, {
-                showError(it.message)
-            })
-            .disposeOnCleared()
-
-    }
+    fun editNote(note: Note)
 
     companion object {
-        enum class NotesActions {
-            LOGOUT
+        enum class NotesScreenAction {
+            LOGOUT, ADD_NOTE
         }
     }
 }

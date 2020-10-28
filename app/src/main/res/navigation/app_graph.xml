@@ -34,6 +34,17 @@
             app:destination="@id/authScreenFragment"
             app:popUpTo="@id/app_graph"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_notesScreenFragment_to_noteScreenFragment"
+            app:destination="@id/noteScreenFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/noteScreenFragment"
+        android:name="com.noteslist.app.screens.note.ui.NoteScreenFragment"
+        android:label="noteScreenFragment"
+        tools:layout="@layout/fragment_note" >
+
     </fragment>
 
 </navigation>

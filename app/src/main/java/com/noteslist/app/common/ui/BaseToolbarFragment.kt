@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.noteslist.app.BR
 import com.noteslist.app.R
+import com.noteslist.app.common.arch.BaseVM
 import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.utils.changeStatusBarColor
 import com.noteslist.app.common.utils.showMessage
@@ -21,7 +22,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import timber.log.Timber
 
-abstract class BaseToolbarFragment<V : BaseViewModel, B : ViewDataBinding> :
+abstract class BaseToolbarFragment<V : BaseVM, B : ViewDataBinding> :
     Fragment(),
     KodeinAware {
     override val kodein: Kodein by closestKodein()

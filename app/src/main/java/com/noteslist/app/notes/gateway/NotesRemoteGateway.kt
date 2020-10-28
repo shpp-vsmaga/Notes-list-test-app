@@ -7,7 +7,7 @@ import io.reactivex.Single
 
 interface NotesRemoteGateway {
 
-    fun getNotes(): Flowable<List<Note>>
+    fun getNotes(): Single<List<Note>>
 
     fun addNote(text: String): Single<Note>
 

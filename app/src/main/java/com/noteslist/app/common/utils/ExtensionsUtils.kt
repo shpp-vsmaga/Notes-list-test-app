@@ -10,6 +10,7 @@ import androidx.annotation.DimenRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.PluralsRes
 import androidx.core.content.ContextCompat
+import com.noteslist.app.notes.models.Note
 
 fun <T> threadUnsafeLazy(initializer: () -> T) = lazy(LazyThreadSafetyMode.NONE, initializer)
 

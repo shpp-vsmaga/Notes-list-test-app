@@ -12,6 +12,9 @@ class NotesDatabaseGateway(private val notesDao: NotesDao) : NotesLocalGateway {
             NotesConverter.fromDatabase(it)
         }
 
+    override fun saveNotes(notes: List<Note>): Completable =
+        notesDao.insert(NotesConverter.toDatabase(notes))
+
     override fun saveNote(note: Note): Completable =
         notesDao.insert(NotesConverter.toDatabase(note))
 

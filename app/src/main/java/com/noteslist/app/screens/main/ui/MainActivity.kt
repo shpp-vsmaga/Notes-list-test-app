@@ -21,7 +21,7 @@ import org.kodein.di.android.closestKodein
 class MainActivity : AppCompatActivity(), KodeinAware {
     override val kodein: Kodein by closestKodein()
 
-    private val viewModel: MainActivityVM by viewModel()
+    private val viewModel: MainActivityVMImpl by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
