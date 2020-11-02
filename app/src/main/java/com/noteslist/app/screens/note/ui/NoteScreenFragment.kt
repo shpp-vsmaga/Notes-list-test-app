@@ -8,12 +8,12 @@ import com.noteslist.app.common.ui.BaseToolbarFragment
 import com.noteslist.app.common.utils.showMessage
 import com.noteslist.app.common.utils.threadUnsafeLazy
 import com.noteslist.app.databinding.FragmentNoteBinding
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.screens.Arguments
 import kotlinx.android.synthetic.main.fragment_note.*
 
 class NoteScreenFragment : BaseToolbarFragment<NoteScreenVM, FragmentNoteBinding>() {
-    override val viewModel: NoteScreenVMImpl by viewModel()
+    override val viewModel: NoteScreenVM by viewModel()
 
     override fun layoutResId() = R.layout.fragment_note
 
@@ -23,9 +23,7 @@ class NoteScreenFragment : BaseToolbarFragment<NoteScreenVM, FragmentNoteBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        note?.let {
-            viewModel.setNote(it)
-        }
+        viewModel.setNote(note)
     }
 
     override fun initFragment() {
@@ -105,10 +103,6 @@ class NoteScreenFragment : BaseToolbarFragment<NoteScreenVM, FragmentNoteBinding
                 else -> false
             }
         }
-    }
-
-    private fun hideMenu() {
-        toolbarDelegate?.clearMenu()
     }
 
     private fun saveNote() {

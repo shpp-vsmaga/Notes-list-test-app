@@ -3,7 +3,7 @@ package com.noteslist.app.screens.notes.ui.adapters
 import android.view.ViewGroup
 import com.noteslist.app.common.ui.BaseAdapter
 import com.noteslist.app.common.ui.BaseViewHolder
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 
 class NotesAdapter(
     private val clickListener: (Note) -> Unit

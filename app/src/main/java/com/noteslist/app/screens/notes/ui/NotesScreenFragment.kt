@@ -8,13 +8,13 @@ import com.noteslist.app.common.di.viewModel
 import com.noteslist.app.common.ui.BaseToolbarFragment
 import com.noteslist.app.common.utils.navigateTo
 import com.noteslist.app.databinding.FragmentNotesBinding
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.screens.Arguments
 import com.noteslist.app.screens.notes.ui.adapters.NotesAdapter
 import kotlinx.android.synthetic.main.fragment_notes.*
 
 class NotesScreenFragment : BaseToolbarFragment<NotesScreenVM, FragmentNotesBinding>() {
-    override val viewModel: NotesScreenVMImpl by viewModel()
+    override val viewModel: NotesScreenVM by viewModel()
 
     override fun layoutResId() = R.layout.fragment_notes
     private lateinit var adapter: NotesAdapter
@@ -58,7 +58,7 @@ class NotesScreenFragment : BaseToolbarFragment<NotesScreenVM, FragmentNotesBind
 
     private fun handleNotesEvent(event: NotesScreenVM.Companion.NotesScreenAction?) {
         when (event) {
-            NotesScreenVM.Companion.NotesScreenAction.LOGOUT -> openStartScreen()
+            NotesScreenVM.Companion.NotesScreenAction.LOGOUT_SUCCESS -> openStartScreen()
             NotesScreenVM.Companion.NotesScreenAction.ADD_NOTE -> openNoteScreen()
         }
     }

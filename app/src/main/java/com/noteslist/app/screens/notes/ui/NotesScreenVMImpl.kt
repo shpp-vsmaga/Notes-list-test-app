@@ -1,12 +1,10 @@
 package com.noteslist.app.screens.notes.ui
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.noteslist.app.auth.useCases.AuthUseCases
-import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.livedata.SingleLiveEvent
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.notes.useCases.NotesUseCases
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -14,10 +12,10 @@ import timber.log.Timber
 
 class NotesScreenVMImpl(
     private val authUseCases: AuthUseCases, private val notesUseCases: NotesUseCases
-) : BaseViewModel(), NotesScreenVM {
+) : NotesScreenVM() {
 
-    private val _notesScreenAction = SingleLiveEvent<NotesScreenVM.Companion.NotesScreenAction>()
-    override val notesAction: LiveData<NotesScreenVM.Companion.NotesScreenAction>
+    private val _notesScreenAction = SingleLiveEvent<Companion.NotesScreenAction>()
+    override val notesAction: LiveData<Companion.NotesScreenAction>
         get() = _notesScreenAction
 
     private val _notesListData = MutableLiveData<List<Note>>()
@@ -56,9 +54,12 @@ class NotesScreenVMImpl(
     }
 
     override fun logout() {
-        authUseCases.logout()
+        notesUseCases.clearLocalCache()
+            .andThen(authUseCases.logout())
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                _notesScreenAction.value = NotesScreenVM.Companion.NotesScreenAction.LOGOUT
+                _notesScreenAction.value = Companion.NotesScreenAction.LOGOUT_SUCCESS
             }, {
                 showError(it.message)
             })
@@ -67,7 +68,7 @@ class NotesScreenVMImpl(
     }
 
     override fun addNote() {
-        _notesScreenAction.value = NotesScreenVM.Companion.NotesScreenAction.ADD_NOTE
+        _notesScreenAction.value = Companion.NotesScreenAction.ADD_NOTE
     }
 
     override fun editNote(note: Note) {

@@ -1,8 +1,9 @@
 package com.noteslist.app.common.arch
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 
-interface BaseVM {
-    val progressVisible: LiveData<Boolean>
-    val errorLiveData: LiveData<String>
+abstract class  BaseVM: ViewModel() {
+    abstract val progressVisible: LiveData<Boolean>
+    abstract val errorLiveData: LiveData<String>
 }

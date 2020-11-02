@@ -4,10 +4,9 @@ import android.accounts.NetworkErrorException
 import com.noteslist.app.common.network.ConnectivityHelper
 import com.noteslist.app.notes.gateway.NotesLocalGateway
 import com.noteslist.app.notes.gateway.NotesRemoteGateway
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import io.reactivex.Completable
 import io.reactivex.Flowable
-import io.reactivex.schedulers.Schedulers
 
 class NotesUseCases(
     private val notesRemoteGateway: NotesRemoteGateway,
@@ -21,7 +20,6 @@ class NotesUseCases(
     fun fetchNotes(): Completable =
         if (connectivityHelper.isOnline) {
             notesRemoteGateway.getNotes()
-                .subscribeOn(Schedulers.io())
                 .flatMapCompletable {
                     notesLocalGateway.saveNotes(it)
                 }
@@ -33,7 +31,6 @@ class NotesUseCases(
     fun addNote(text: String): Completable =
         if (connectivityHelper.isOnline) {
             notesRemoteGateway.addNote(text)
-                .subscribeOn(Schedulers.io())
                 .flatMapCompletable {
                     notesLocalGateway.saveNote(it)
                 }
@@ -71,4 +68,8 @@ class NotesUseCases(
                 )
             }
         }
+
+    fun clearLocalCache(): Completable =
+        notesLocalGateway.deleteAll()
+
 }

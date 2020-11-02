@@ -1,8 +1,7 @@
 package com.noteslist.app.notes.gateway
 
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
 
 interface NotesRemoteGateway {

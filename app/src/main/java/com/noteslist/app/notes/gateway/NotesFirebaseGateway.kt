@@ -3,12 +3,13 @@ package com.noteslist.app.notes.gateway
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.noteslist.app.common.utils.ExecuteOnCaller
 import com.noteslist.app.common.utils.toJodaDateTime
 import com.noteslist.app.notes.models.FirebaseDbKeys.COLLECTION_NOTES
 import com.noteslist.app.notes.models.FirebaseDbKeys.COLLECTION_USER_NOTES
 import com.noteslist.app.notes.models.FirebaseDbKeys.FIELD_CREATED_AT
 import com.noteslist.app.notes.models.FirebaseDbKeys.FIELD_TEXT
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import io.reactivex.Completable
 import io.reactivex.Single
 import org.joda.time.DateTime

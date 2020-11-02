@@ -1,4 +1,4 @@
-package com.noteslist.app.notes.models
+package com.noteslist.app.notes.models.view
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

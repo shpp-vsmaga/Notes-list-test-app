@@ -55,7 +55,7 @@ class AuthScreenFragment : BaseFragment<AuthScreenVM, FragmentAuthBinding>() {
             if (resultCode == Activity.RESULT_OK) {
                 val user = FirebaseAuth.getInstance().currentUser
                 user?.let {
-                    viewModel.signInSuccess(user.uid)
+                    viewModel.signInSuccess()
                 }
             } else {
                 viewModel.signInError(response?.error?.message)

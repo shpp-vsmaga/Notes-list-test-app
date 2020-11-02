@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.noteslist.app.notes.models.db.NoteEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
@@ -19,6 +20,9 @@ interface NotesDao {
     @Query(QUERY_REMOVE_SINGLE)
     fun delete(id: String): Completable
 
+    @Query(QUERY_REMOVE_ALL)
+    fun deleteAll(): Completable
+
     @Query(QUERY_ALL_NOTES)
     fun getAllFlowable(): Flowable<List<NoteEntity>>
 
@@ -33,6 +37,11 @@ interface NotesDao {
            DELETE
            FROM ${NoteEntity.TABLE_NAME}
            WHERE id = :id
+        """
+
+        private const val QUERY_REMOVE_ALL = """
+           DELETE
+           FROM ${NoteEntity.TABLE_NAME}
         """
     }
 }

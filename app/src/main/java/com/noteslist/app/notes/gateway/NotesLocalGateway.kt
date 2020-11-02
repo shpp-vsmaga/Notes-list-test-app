@@ -1,6 +1,6 @@
 package com.noteslist.app.notes.gateway
 
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
@@ -13,4 +13,6 @@ interface NotesLocalGateway {
     fun saveNote(note: Note): Completable
 
     fun deleteNote(id: String): Completable
+
+    fun deleteAll(): Completable
 }

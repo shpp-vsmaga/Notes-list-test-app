@@ -10,7 +10,7 @@ import org.kodein.di.generic.provider
 
 object NotesScreenInjectionModule : InjectionModule {
     override val module = Kodein.Module(this.javaClass.name) {
-        bind<NotesScreenVMImpl>() with provider {
+        bind<NotesScreenVM>() with provider {
             NotesScreenVMImpl(instance(), instance())
         }
     }

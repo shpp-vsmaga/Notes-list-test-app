@@ -3,7 +3,7 @@ package com.noteslist.app.screens.notes.ui.adapters
 import android.view.ViewGroup
 import com.noteslist.app.R
 import com.noteslist.app.common.ui.BaseViewHolder
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import kotlinx.android.synthetic.main.item_note.view.*
 
 class NoteViewHolder(

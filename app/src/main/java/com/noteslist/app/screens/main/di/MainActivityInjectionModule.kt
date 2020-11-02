@@ -10,7 +10,7 @@ import org.kodein.di.generic.provider
 
 object MainActivityInjectionModule : InjectionModule {
     override val module = Kodein.Module(this.javaClass.name) {
-        bind<MainActivityVMImpl>() with provider {
+        bind<MainActivityVM>() with provider {
             MainActivityVMImpl(instance())
         }
     }

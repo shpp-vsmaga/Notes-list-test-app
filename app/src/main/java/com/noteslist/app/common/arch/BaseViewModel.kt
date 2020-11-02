@@ -8,13 +8,13 @@ import com.noteslist.app.common.livedata.SingleLiveEvent
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-abstract class BaseViewModel : ViewModel(), BaseVM {
+abstract class BaseViewModel : ViewModel() {
     private val _progressVisible = MutableLiveData<Boolean>(false)
-    override val progressVisible: LiveData<Boolean>
+    val progressVisible: LiveData<Boolean>
         get() = _progressVisible
 
     private val _errorLiveData = SingleLiveEvent<String>()
-    override val errorLiveData: LiveData<String>
+    val errorLiveData: LiveData<String>
         get() = _errorLiveData
 
     private val compositeDisposable = CompositeDisposable()

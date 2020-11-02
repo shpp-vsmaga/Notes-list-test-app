@@ -3,7 +3,6 @@ package com.noteslist.app.screens.main.ui
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -25,17 +24,14 @@ import org.kodein.di.android.closestKodein
 class MainActivity : AppCompatActivity(), KodeinAware {
     override val kodein: Kodein by closestKodein()
 
-    private val viewModel: MainActivityVMImpl by viewModel()
+    private val viewModel: MainActivityVM by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding =
             DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
         binding.setVariable(BR.vm, viewModel)
-        Log.d("svcom", "saved instance on create - ${savedInstanceState}")
-//        if (savedInstanceState == null) {
         initActivity()
-//        }
     }
 
     private fun initActivity() {

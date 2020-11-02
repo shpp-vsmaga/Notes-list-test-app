@@ -11,7 +11,6 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.PluralsRes
 import androidx.core.content.ContextCompat
 import com.google.firebase.Timestamp
-import com.noteslist.app.notes.models.Note
 import org.joda.time.DateTime
 
 fun <T> threadUnsafeLazy(initializer: () -> T) = lazy(LazyThreadSafetyMode.NONE, initializer)

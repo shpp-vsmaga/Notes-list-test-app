@@ -3,17 +3,16 @@ package com.noteslist.app.screens.note.ui
 import android.accounts.NetworkErrorException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.livedata.SingleLiveEvent
 import com.noteslist.app.common.livedata.SizeRangeTextLiveData
 import com.noteslist.app.common.livedata.TextChangedLiveData
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.notes.useCases.NotesUseCases
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
-class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel(), NoteScreenVM {
+class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM() {
 
     private val _noteData = MutableLiveData<Note>()
     override val noteData: LiveData<Note>
@@ -34,15 +33,15 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
     override val textChangedData: LiveData<Boolean>
         get() = _textChangedData
 
-    init {
-        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_ADD_MODE
-    }
-
-    override fun setNote(note: Note) {
-        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_EDIT_MODE
-        _noteData.value = note
-        originalTextData.value = note.text
-        _noteTextData.value = note.text
+    override fun setNote(note: Note?) {
+        if (note != null) {
+            _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_EDIT_MODE
+            _noteData.value = note
+            originalTextData.value = note.text
+            _noteTextData.value = note.text
+        } else {
+            _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_ADD_MODE
+        }
     }
 
     override fun saveNote() {

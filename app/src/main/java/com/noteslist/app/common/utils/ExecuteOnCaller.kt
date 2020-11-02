@@ -1,18 +1,16 @@
-package com.noteslist.app.notes.gateway
+package com.noteslist.app.common.utils
 
 import android.os.Handler
 import android.os.HandlerThread
 import android.os.Looper
-import android.util.Log
 import java.util.concurrent.Executor
 
 class ExecuteOnCaller : Executor {
     private val threadLocalHandler = object : ThreadLocal<Handler>() {
         override fun initialValue(): Handler {
-            val handlerThread = HandlerThread("io")
+            val handlerThread = HandlerThread(FIRESTORE_HANDLER_TRADE_NAME)
             handlerThread.start()
             val looper = handlerThread.looper
-            Log.d("svcom", "lopper in initial - ${looper?.thread?.name}")
             return Handler(looper ?: Looper.getMainLooper())
         }
     }
@@ -22,5 +20,9 @@ class ExecuteOnCaller : Executor {
         command?.let {
             handler?.post(command)
         }
+    }
+
+    companion object {
+        const val FIRESTORE_HANDLER_TRADE_NAME = "firestore_io"
     }
 }

@@ -2,25 +2,25 @@ package com.noteslist.app.screens.note.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.noteslist.app.common.arch.BaseVM
+import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.livedata.SizeRangeTextLiveData
-import com.noteslist.app.notes.models.Note
+import com.noteslist.app.notes.models.view.Note
 
-interface NoteScreenVM : BaseVM {
+abstract class NoteScreenVM : BaseViewModel() {
 
-    val noteData: LiveData<Note>
+    abstract val noteData: LiveData<Note>
 
-    val noteTextData: MutableLiveData<String>
+    abstract val noteTextData: SizeRangeTextLiveData
 
-    val textChangedData: LiveData<Boolean>
+    abstract val textChangedData: LiveData<Boolean>
 
-    val noteScreenAction: LiveData<NoteScreenAction>
+    abstract val noteScreenAction: LiveData<NoteScreenAction>
 
-    fun setNote(note: Note)
+    abstract fun setNote(note: Note?)
 
-    fun saveNote()
+    abstract fun saveNote()
 
-    fun deleteNote()
+    abstract fun deleteNote()
 
     companion object {
         enum class NoteScreenAction {

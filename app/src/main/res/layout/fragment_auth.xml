@@ -6,7 +6,7 @@
 
         <variable
             name="vm"
-            type="com.noteslist.app.screens.auth.ui.AuthScreenVM" />
+            type="com.noteslist.app.screens.auth.ui.AuthScreenVMImpl" />
 
     </data>
 

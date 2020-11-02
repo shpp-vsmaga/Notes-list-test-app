@@ -22,7 +22,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import timber.log.Timber
 
-abstract class BaseFragment<V: BaseVM, B : ViewDataBinding> :
+abstract class BaseFragment<V: BaseViewModel, B : ViewDataBinding> :
     Fragment(),
     KodeinAware {
     override val kodein: Kodein by closestKodein()

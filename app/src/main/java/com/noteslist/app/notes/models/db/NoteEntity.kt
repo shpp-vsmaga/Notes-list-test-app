@@ -1,8 +1,8 @@
-package com.noteslist.app.notes.db
+package com.noteslist.app.notes.models.db
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.noteslist.app.notes.db.NoteEntity.Companion.TABLE_NAME
+import com.noteslist.app.notes.models.db.NoteEntity.Companion.TABLE_NAME
 import org.joda.time.DateTime
 
 
