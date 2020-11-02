@@ -4,33 +4,26 @@ import androidx.lifecycle.MutableLiveData
 
 class SizeRangeTextLiveData(
     private val minSize: Int,
-    private val maxSize: Int,
-    private val checkIfEmpty: Boolean = true
+    private val maxSize: Int
 ) :
     MutableLiveData<String>() {
 
-    //default value for empty is false, but if we should ignore empty values, we need
-    //to set true as default value
-    var isValid = !checkIfEmpty
+    //default value for empty is false
+    var isValid = false
         private set
 
     override fun setValue(value: String?) {
-        val filteredValue = value?.trim()
-        isValid = if (checkIfEmpty) {
-            filteredValue?.isNotEmpty() == true && filteredValue.length >= minSize && filteredValue.length <= maxSize
-        } else {
-            (filteredValue == null || filteredValue.isEmpty()) || filteredValue.length in minSize..maxSize
-        }
+        validate(value)
         super.setValue(value)
     }
 
     override fun postValue(value: String?) {
-        val filteredValue = value?.trim()
-        isValid = if (checkIfEmpty) {
-            filteredValue?.isNotEmpty() == true && filteredValue.length >= minSize && filteredValue.length <= maxSize
-        } else {
-            (filteredValue == null || filteredValue.isEmpty()) || filteredValue.length in minSize..maxSize
-        }
+        validate(value)
         super.postValue(value)
+    }
+
+    private fun validate(value: String?) {
+        val filteredValue = value?.trim()
+        isValid = filteredValue?.isNotEmpty() == true && filteredValue.length in minSize..maxSize
     }
 }

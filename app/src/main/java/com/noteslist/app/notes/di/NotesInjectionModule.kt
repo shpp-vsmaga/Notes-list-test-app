@@ -28,7 +28,7 @@ object NotesInjectionModule : InjectionModule {
             NotesFirebaseGateway(instance(), instance())
         }
         bind<NotesUseCases>() with provider {
-            NotesUseCases(instance(), instance())
+            NotesUseCases(instance(), instance(), instance())
         }
 
     }

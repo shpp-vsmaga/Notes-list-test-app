@@ -13,4 +13,5 @@
     <string name="delete">Delete</string>
     <string name="edit_note">Edit note</string>
     <string name="add_note">Add note</string>
+    <string name="offline_message">You’re offline. Check your connection.</string>
 </resources>

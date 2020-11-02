@@ -26,7 +26,7 @@ interface NotesDao {
         private const val QUERY_ALL_NOTES = """
            SELECT *
            FROM ${NoteEntity.TABLE_NAME}
-           ORDER BY id DESC
+           ORDER BY createdAt DESC
         """
 
         private const val QUERY_REMOVE_SINGLE = """

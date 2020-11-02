@@ -2,6 +2,7 @@ package com.noteslist.app.common.di
 
 import androidx.room.Room
 import com.noteslist.app.common.db.NotesDatabase
+import com.noteslist.app.common.network.ConnectivityHelper
 import org.kodein.di.Kodein
 import org.kodein.di.generic.bind
 import org.kodein.di.generic.instance
@@ -22,6 +23,10 @@ object CommonInjectionModule : InjectionModule {
                 .fallbackToDestructiveMigration()
                 .setQueryExecutor(Executors.newCachedThreadPool())
                 .build()
+        }
+
+        bind<ConnectivityHelper>() with singleton {
+            ConnectivityHelper(instance())
         }
     }
 }

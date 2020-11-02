@@ -38,7 +38,6 @@ class NotesScreenVMImpl(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({}, {
-                Log.d("svcom", "fetch notes error -${it.message}")
                 Timber.e(it)
             })
             .disposeOnCleared()
@@ -50,9 +49,7 @@ class NotesScreenVMImpl(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 _notesListData.value = it
-                Log.d("svcom", "on notes list - ${it}")
             }, {
-                Log.d("svcom", "get notes error -${it.message}")
                 Timber.e(it)
             })
             .disposeOnCleared()

@@ -12,7 +12,8 @@ object NotesConverter {
     fun fromDatabase(note: NoteEntity): Note =
         Note(
             id = note.id,
-            text = note.text
+            text = note.text,
+            createdAt = note.createdAt
         )
 
     fun toDatabase(notes: List<Note>): List<NoteEntity> =
@@ -24,6 +25,7 @@ object NotesConverter {
     fun toDatabase(note: Note): NoteEntity =
         NoteEntity(
             id = note.id,
-            text = note.text
+            text = note.text,
+            createdAt = note.createdAt
         )
 }

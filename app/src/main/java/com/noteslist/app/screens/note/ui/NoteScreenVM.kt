@@ -24,7 +24,7 @@ interface NoteScreenVM : BaseVM {
 
     companion object {
         enum class NoteScreenAction {
-            CLOSE, SHOW_ADD_TITLE, SHOW_EDIT_TITLE
+            CLOSE, SHOW_ADD_MODE, SHOW_EDIT_MODE, SHOW_OFFLINE_MESSAGE
         }
     }
 }

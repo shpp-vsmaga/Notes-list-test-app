@@ -1,6 +1,6 @@
 package com.noteslist.app.screens.note.ui
 
-import android.util.Log
+import android.accounts.NetworkErrorException
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.noteslist.app.common.arch.BaseViewModel
@@ -25,7 +25,7 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
 
     private val _noteTextData =
         SizeRangeTextLiveData(FieldsParams.NOTE_TEXT_SIZE_MIN, FieldsParams.NOTE_TEXT_SIZE_MAX)
-    override val noteTextData: MutableLiveData<String>
+    override val noteTextData: SizeRangeTextLiveData
         get() = _noteTextData
 
     private val originalTextData = MutableLiveData<String>()
@@ -35,20 +35,17 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
         get() = _textChangedData
 
     init {
-        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_ADD_TITLE
+        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_ADD_MODE
     }
 
     override fun setNote(note: Note) {
-        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_EDIT_TITLE
+        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_EDIT_MODE
         _noteData.value = note
         originalTextData.value = note.text
+        _noteTextData.value = note.text
     }
 
     override fun saveNote() {
-        Log.d(
-            "svcom",
-            "save note click, note text = ${_noteTextData.value}, isValid - ${_noteTextData.isValid}"
-        )
         if (_noteTextData.isValid) {
             if (_noteData.value != null) {
                 savedEditedNote(_noteTextData.value)
@@ -70,7 +67,14 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
                     .doOnError { hideProgress() }
                     .subscribe({
                         _noteData.value = editedNote
+                        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.CLOSE
                     }, { error ->
+                        if (error.cause is NetworkErrorException) {
+                            _noteScreenAction.value =
+                                NoteScreenVM.Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+                        } else {
+                            showError(error.message)
+                        }
                         Timber.e(error)
                     })
                     .disposeOnCleared()
@@ -79,7 +83,6 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
     }
 
     private fun addNewNote(text: String?) {
-        Log.d("svcom", "add new note - ${text}")
         text?.let {
             notesUseCases.addNote(text)
                 .subscribeOn(Schedulers.io())
@@ -90,7 +93,12 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
                 .subscribe({
                     _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.CLOSE
                 }, { error ->
-                    Log.d("svcom", "add note error - ${error.message}")
+                    if (error.cause is NetworkErrorException) {
+                        _noteScreenAction.value =
+                            NoteScreenVM.Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+                    } else {
+                        showError(error.message)
+                    }
                     Timber.e(error)
                 })
                 .disposeOnCleared()
@@ -108,6 +116,12 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : BaseViewModel
                 .subscribe({
                     _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.CLOSE
                 }, { error ->
+                    if (error.cause is NetworkErrorException) {
+                        _noteScreenAction.value =
+                            NoteScreenVM.Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+                    } else {
+                        showError(error.message)
+                    }
                     Timber.e(error)
                 })
                 .disposeOnCleared()

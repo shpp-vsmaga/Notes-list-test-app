@@ -1,15 +1,17 @@
 package com.noteslist.app.notes.gateway
 
-import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.noteslist.app.common.utils.toJodaDateTime
 import com.noteslist.app.notes.models.FirebaseDbKeys.COLLECTION_NOTES
 import com.noteslist.app.notes.models.FirebaseDbKeys.COLLECTION_USER_NOTES
+import com.noteslist.app.notes.models.FirebaseDbKeys.FIELD_CREATED_AT
 import com.noteslist.app.notes.models.FirebaseDbKeys.FIELD_TEXT
 import com.noteslist.app.notes.models.Note
 import io.reactivex.Completable
-import io.reactivex.Flowable
 import io.reactivex.Single
+import org.joda.time.DateTime
 
 class NotesFirebaseGateway(
     private val db: FirebaseFirestore,
@@ -21,7 +23,7 @@ class NotesFirebaseGateway(
             if (userId != null) {
                 val notesRef = db.collection(COLLECTION_NOTES).document(userId)
                     .collection(COLLECTION_USER_NOTES)
-                notesRef.addSnapshotListener { snapshot, e ->
+                notesRef.addSnapshotListener(ExecuteOnCaller()) { snapshot, e ->
                     if (e != null) {
                         emitter.onError(e)
                     }
@@ -30,7 +32,9 @@ class NotesFirebaseGateway(
                         val notes = documents.map {
                             Note(
                                 id = it.id,
-                                text = it[FIELD_TEXT] as String
+                                text = (it[FIELD_TEXT] as? String).orEmpty(),
+                                createdAt = (it[FIELD_CREATED_AT] as? Timestamp)?.toJodaDateTime()
+                                    ?: DateTime.now()
                             )
                         }
                         emitter.onSuccess(notes)
@@ -46,23 +50,28 @@ class NotesFirebaseGateway(
     override fun addNote(text: String): Single<Note> =
         Single.create { emitter ->
             val userId = firebaseAuth.currentUser?.uid
-            Log.d("svcom", "add note - ${userId}")
             if (userId != null) {
                 val notesRef = db.collection(COLLECTION_NOTES).document(userId)
                     .collection(COLLECTION_USER_NOTES)
                 notesRef.add(
-                    mapOf(FIELD_TEXT to text)
-                ).addOnCompleteListener {
+                    mapOf(FIELD_TEXT to text, FIELD_CREATED_AT to Timestamp.now())
+                ).addOnCompleteListener(ExecuteOnCaller()) {
                     it.exception?.let { error ->
                         emitter.onError(error)
                     }
-                    if (it.isSuccessful && it.result != null) {
-                        emitter.onSuccess(
-                            Note(
-                                id = it.result!!.id,
-                                text = text
-                            )
-                        )
+                    if (it.isSuccessful) {
+                        it.result?.get()?.addOnCompleteListener(ExecuteOnCaller()) { snapshot ->
+                            snapshot.result?.let { docRef ->
+                                emitter.onSuccess(
+                                    Note(
+                                        id = docRef.id,
+                                        text = (docRef[FIELD_TEXT] as? String).orEmpty(),
+                                        createdAt = (docRef[FIELD_CREATED_AT] as? Timestamp)?.toJodaDateTime()
+                                            ?: DateTime.now()
+                                    )
+                                )
+                            }
+                        }
                     } else if (it.isCanceled) {
                         emitter.onError(Exception("Operation canceled"))
                     }
@@ -80,7 +89,7 @@ class NotesFirebaseGateway(
                 val noteRef = db.collection(COLLECTION_NOTES).document(userId)
                     .collection(COLLECTION_USER_NOTES).document(note.id)
                 noteRef.set(mapOf(FIELD_TEXT to note.text))
-                    .addOnCompleteListener {
+                    .addOnCompleteListener(ExecuteOnCaller()) {
                         it.exception?.let { error ->
                             emitter.onError(error)
                         }
@@ -101,7 +110,7 @@ class NotesFirebaseGateway(
             if (userId != null) {
                 val noteRef = db.collection(COLLECTION_NOTES).document(userId)
                     .collection(COLLECTION_USER_NOTES).document(id)
-                noteRef.delete().addOnCompleteListener {
+                noteRef.delete().addOnCompleteListener(ExecuteOnCaller()) {
                     it.exception?.let { error ->
                         emitter.onError(error)
                     }
