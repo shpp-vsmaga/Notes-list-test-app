@@ -8,6 +8,9 @@ import com.noteslist.app.screens.note.di.NoteScreenInjectionModule
 import com.noteslist.app.screens.notes.di.NotesScreenInjectionModule
 import org.kodein.di.Kodein
 
+/**
+ * Contains kodein injection modules for separate parts of the app
+ */
 object InjectionModules {
 
     val appDependencyInjectionModule = Kodein.Module("Main injection module") {

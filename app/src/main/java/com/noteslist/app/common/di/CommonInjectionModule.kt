@@ -9,6 +9,9 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.singleton
 import java.util.concurrent.Executors
 
+/**
+ * Contains binding for common tools like DB, network, etc.
+ */
 object CommonInjectionModule : InjectionModule {
     private const val DATABASE_NAME = "notes_list_db"
     override val module = Kodein.Module(this.javaClass.name) {

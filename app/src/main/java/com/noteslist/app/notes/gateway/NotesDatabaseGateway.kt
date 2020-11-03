@@ -6,7 +6,15 @@ import com.noteslist.app.notes.models.NotesMapper
 import io.reactivex.Completable
 import io.reactivex.Flowable
 
+/**
+ * Implementation of NotesLocalGateway based on the Room ORM
+ */
 class NotesDatabaseGateway(private val notesDao: NotesDao) : NotesLocalGateway {
+
+    /**
+     * Flowable will always contain the actual data from DB if it was changed with
+     * the save instance
+     */
     override fun getNotes(): Flowable<List<Note>> =
         notesDao.getAllFlowable().map {
             NotesMapper.fromDatabase(it)

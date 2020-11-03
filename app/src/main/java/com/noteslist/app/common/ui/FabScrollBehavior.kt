@@ -11,7 +11,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.view.ViewCompat
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-
+/**
+ * Behavior for the FloatingActionButton from new Material components lib
+ * Used to hide/show Fab on nested scroll event of scrollable view in the same CoordinatorLayout
+ */
 class FabScrollBehavior(context: Context, attrs: AttributeSet) :
     CoordinatorLayout.Behavior<FloatingActionButton>(context, attrs) {
     private var handler: Handler? = null

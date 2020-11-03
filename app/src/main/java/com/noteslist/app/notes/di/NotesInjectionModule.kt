@@ -17,6 +17,10 @@ import org.kodein.di.generic.instance
 import org.kodein.di.generic.provider
 import org.kodein.di.generic.singleton
 
+/**
+ * Separate injection module, contains bindings for instances injected Notes package, like
+ * Room DAO, repositories implementations, view models, etc.
+ */
 object NotesInjectionModule : InjectionModule {
     override val module = Kodein.Module(this.javaClass.name) {
         bind<NotesDao>() with singleton { instance<NotesDatabase>().notesDao() }

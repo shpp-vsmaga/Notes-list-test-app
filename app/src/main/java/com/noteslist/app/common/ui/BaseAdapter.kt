@@ -1,12 +1,17 @@
 package com.noteslist.app.common.ui
 
-abstract class BaseAdapter<T> : androidx.recyclerview.widget.RecyclerView.Adapter<BaseViewHolder<T>>() {
+/**
+ * Base implementation of RecyclerView adapter with common features
+ */
+abstract class BaseAdapter<T> :
+    androidx.recyclerview.widget.RecyclerView.Adapter<BaseViewHolder<T>>() {
 
     protected val data = mutableListOf<T>()
 
     override fun getItemCount() = data.size
 
-    override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) = holder.onBind(data[position])
+    override fun onBindViewHolder(holder: BaseViewHolder<T>, position: Int) =
+        holder.onBind(data[position])
 
     open fun getItem(position: Int): T = data[position]
 

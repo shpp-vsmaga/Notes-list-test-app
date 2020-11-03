@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.noteslist.app.R
 
+
 class SplashFragment : Fragment() {
 
     override fun onCreateView(

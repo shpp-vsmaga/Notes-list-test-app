@@ -14,10 +14,14 @@ import io.reactivex.Completable
 import io.reactivex.Single
 import org.joda.time.DateTime
 
+/**
+ * Implementation of NotesRemoteGateway based on the Firebase Firestore
+ */
 class NotesFirebaseGateway(
     private val db: FirebaseFirestore,
     private val firebaseAuth: FirebaseAuth
 ) : NotesRemoteGateway {
+
     override fun getNotes(): Single<List<Note>> =
         Single.create { emitter ->
             val userId = firebaseAuth.currentUser?.uid

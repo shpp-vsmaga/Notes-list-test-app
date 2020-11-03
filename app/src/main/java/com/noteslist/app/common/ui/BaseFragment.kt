@@ -21,6 +21,12 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.closestKodein
 import timber.log.Timber
 
+/**
+ * Base implementation of Fragment in MVVM, that use DataBinding
+ * Use to avoid a lot of boilerplate code when creating new screen,
+ * We simply need to set types of ViewModel and DataBinding,
+ * then pass viewModel instance and layout resource id to the corresponding fields
+ */
 abstract class BaseFragment<V: BaseViewModel, B : ViewDataBinding> :
     Fragment(),
     KodeinAware {

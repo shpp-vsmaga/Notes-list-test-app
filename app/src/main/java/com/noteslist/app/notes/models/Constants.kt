@@ -1,5 +1,8 @@
 package com.noteslist.app.notes.models
 
+/**
+ * Keys for collections and documents in Firestore
+ */
 object FirebaseDbKeys{
     const val COLLECTION_USER_NOTES = "user_notes"
     const val COLLECTION_NOTES = "notes"

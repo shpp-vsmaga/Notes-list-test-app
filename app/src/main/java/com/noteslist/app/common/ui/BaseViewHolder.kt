@@ -10,6 +10,9 @@ import androidx.lifecycle.LifecycleRegistry
 import androidx.recyclerview.widget.RecyclerView
 import com.noteslist.app.common.utils.setThrottleOnClickListener
 
+/**
+ * Base implementation of RecyclerView adapter's ViewHolder with common features
+ */
 abstract class BaseViewHolder<T>(
     view: View,
     private val listener: ((T) -> Unit)?
