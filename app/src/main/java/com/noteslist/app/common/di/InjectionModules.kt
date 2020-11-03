@@ -13,7 +13,6 @@ object InjectionModules {
     val appDependencyInjectionModule = Kodein.Module("Main injection module") {
         import(CommonInjectionModule.module)
         import(AuthInjectionModule.module)
-        import(PreferenceInjectionModule.module)
         import(MainActivityInjectionModule.module)
         import(AuthScreenInjectionModule.module)
         import(NotesScreenInjectionModule.module)

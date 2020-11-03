@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.noteslist.app.BR
 import com.noteslist.app.R
-import com.noteslist.app.common.arch.BaseVM
 import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.utils.changeStatusBarColor
 import com.noteslist.app.common.utils.showMessage

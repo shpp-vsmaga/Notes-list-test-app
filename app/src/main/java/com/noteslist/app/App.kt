@@ -32,7 +32,6 @@ class App : Application(), KodeinAware {
             clear()
             addImport(InjectionModules.appDependencyInjectionModule)
             addImport(Kodein.Module {
-                bind<ContentResolver>() with singleton { this@App.contentResolver }
                 bind<Context>() with singleton { this@App }
             })
         }

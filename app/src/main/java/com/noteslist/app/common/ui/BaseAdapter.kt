@@ -23,22 +23,6 @@ abstract class BaseAdapter<T> : androidx.recyclerview.widget.RecyclerView.Adapte
         notifyDataSetChanged()
     }
 
-    open fun addItems(items: List<T>) {
-        data.addAll(items)
-        notifyItemRangeInserted(data.size + 1, data.size)
-    }
-
-    open fun addItem(item: T) {
-        data.add(item)
-        notifyItemRangeInserted(data.size + 1, data.size)
-    }
-
-    fun removeItem(element: T) {
-        val position = data.indexOf(element)
-        data.remove(element)
-        notifyItemRemoved(position)
-    }
-
     override fun onViewRecycled(holder: BaseViewHolder<T>) {
         super.onViewRecycled(holder)
         holder.onViewRecycled()

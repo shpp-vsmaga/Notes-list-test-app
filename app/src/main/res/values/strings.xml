@@ -2,8 +2,6 @@
     <string name="app_name">Notes List</string>
     <string name="initialization">Initialization…</string>
     <string name="sign_in_or_create_nw_account">Sign in or create new account</string>
-    <string name="email_address">Email address</string>
-    <string name="password">Password</string>
     <string name="continue_text">Continue</string>
     <string name="logout">Logout</string>
     <string name="are_you_sure_want_to_logout">Are you sure you want to log out?</string>

@@ -6,6 +6,14 @@ apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 30
+    signingConfigs {
+        release {
+            storeFile file("../notes-list-key")
+            storePassword "4KUuqDAV"
+            keyAlias "notes-list"
+            keyPassword "4KUuqDAV"
+        }
+    }
 
     defaultConfig {
         applicationId "com.noteslist.app"
@@ -13,8 +21,8 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
-
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        signingConfig signingConfigs.release
     }
 
     buildTypes {

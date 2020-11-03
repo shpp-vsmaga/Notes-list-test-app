@@ -20,8 +20,8 @@ abstract class BaseViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
 
     /**
-     * Add current LiveData to composite disposable;
-     * And clearing all added LiveData will be removed when ViewModel call onCleared method,
+     * Add current Disposable to composite disposable;
+     * All added Disposables will be disposed when ViewModel call onCleared method,
      * e.g. when we leaved from Fragment or Activity
      */
     protected fun Disposable.disposeOnCleared() {

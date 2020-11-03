@@ -13,7 +13,6 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.noteslist.app.BR
 import com.noteslist.app.R
-import com.noteslist.app.common.arch.BaseVM
 import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.utils.changeStatusBarColor
 import com.noteslist.app.common.utils.showMessage
@@ -27,7 +26,7 @@ abstract class BaseFragment<V: BaseViewModel, B : ViewDataBinding> :
     KodeinAware {
     override val kodein: Kodein by closestKodein()
 
-    protected lateinit var binding: B
+    private lateinit var binding: B
 
     protected abstract val viewModel: V
 
@@ -66,7 +65,7 @@ abstract class BaseFragment<V: BaseViewModel, B : ViewDataBinding> :
         val color = R.color.color_white
         changeStatusBarColor(
             activity,
-            resources.getColor(color),
+            resources.getColor(color, activity?.theme),
             lightStatusBar = isLight
         )
     }

@@ -27,19 +27,16 @@ class ConnectivityHelper(private val context: Context) {
             override fun onAvailable(network: Network) {
                 super.onAvailable(network)
                 isOnline = true
-                Log.d("svcom", "onAvailable")
             }
 
             override fun onLost(network: Network) {
                 super.onLost(network)
                 isOnline = false
-                Log.d("svcom", "onLost")
             }
 
             override fun onUnavailable() {
                 super.onUnavailable()
                 isOnline = false
-                Log.d("svcom", "onUnavailable")
             }
         }
         val connectivityManager =

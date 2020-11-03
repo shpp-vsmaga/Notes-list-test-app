@@ -1,7 +1,6 @@
 package com.noteslist.app.screens.note.ui
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.noteslist.app.common.arch.BaseViewModel
 import com.noteslist.app.common.livedata.SizeRangeTextLiveData
 import com.noteslist.app.notes.models.view.Note

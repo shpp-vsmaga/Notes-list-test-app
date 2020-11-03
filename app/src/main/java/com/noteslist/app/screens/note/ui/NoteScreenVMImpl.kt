@@ -18,8 +18,8 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
     override val noteData: LiveData<Note>
         get() = _noteData
 
-    private val _noteScreenAction = SingleLiveEvent<NoteScreenVM.Companion.NoteScreenAction>()
-    override val noteScreenAction: LiveData<NoteScreenVM.Companion.NoteScreenAction>
+    private val _noteScreenAction = SingleLiveEvent<Companion.NoteScreenAction>()
+    override val noteScreenAction: LiveData<Companion.NoteScreenAction>
         get() = _noteScreenAction
 
     private val _noteTextData =
@@ -35,12 +35,12 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
 
     override fun setNote(note: Note?) {
         if (note != null) {
-            _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_EDIT_MODE
+            _noteScreenAction.value = Companion.NoteScreenAction.SHOW_EDIT_MODE
             _noteData.value = note
             originalTextData.value = note.text
             _noteTextData.value = note.text
         } else {
-            _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.SHOW_ADD_MODE
+            _noteScreenAction.value = Companion.NoteScreenAction.SHOW_ADD_MODE
         }
     }
 
@@ -66,11 +66,11 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
                     .doOnError { hideProgress() }
                     .subscribe({
                         _noteData.value = editedNote
-                        _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.CLOSE
+                        _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
                     }, { error ->
                         if (error.cause is NetworkErrorException) {
                             _noteScreenAction.value =
-                                NoteScreenVM.Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+                                Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
                         } else {
                             showError(error.message)
                         }
@@ -90,11 +90,11 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
                 .doOnComplete { hideProgress() }
                 .doOnError { hideProgress() }
                 .subscribe({
-                    _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.CLOSE
+                    _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
                 }, { error ->
                     if (error.cause is NetworkErrorException) {
                         _noteScreenAction.value =
-                            NoteScreenVM.Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+                            Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
                     } else {
                         showError(error.message)
                     }
@@ -113,11 +113,11 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
                 .doOnComplete { hideProgress() }
                 .doOnError { hideProgress() }
                 .subscribe({
-                    _noteScreenAction.value = NoteScreenVM.Companion.NoteScreenAction.CLOSE
+                    _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
                 }, { error ->
                     if (error.cause is NetworkErrorException) {
                         _noteScreenAction.value =
-                            NoteScreenVM.Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+                            Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
                     } else {
                         showError(error.message)
                     }

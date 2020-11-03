@@ -1,0 +1,24 @@
+image: victorlap/gitlab-ci-android-fastlane
+
+variables:
+  VERSION_SDK_TOOLS: "6514223"
+  VERSION_BUILD_TOOLS: "29.0.2"
+  VERSION_TARGET_SDK: "29"
+
+before_script:
+  - export GRADLE_USER_HOME=$(pwd)/.gradle
+  - chmod +x gradlew
+
+stages:
+  - test
+
+cache:
+  key: "$CI_JOB_NAME-$CI_COMMIT_REF_SLUG"
+  paths:
+    - .gradle
+    - app/build/
+
+test:
+  stage: test
+  script:
+    - fastlane test

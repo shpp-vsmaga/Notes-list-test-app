@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "827959938376-ng2hvbp4gg50650nuj5er16slqtoc98j.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.noteslist.app",
+            "certificate_hash": "72e044e8d2c721614602d6c12f70b9e0fb517c84"
+          }
+        },
+        {
           "client_id": "827959938376-0fgd0t199sone18virhc6sj1n8tvqpgt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
