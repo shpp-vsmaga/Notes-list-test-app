@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="vm"
+            type="com.noteslist.app.screens.auth.ui.AuthScreenVMImpl" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <TextView
+            android:id="@+id/tv_registration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_in_or_create_nw_account"
+            android:textColor="@color/color_purple_main"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/ll_fields"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:clipToPadding="false"-->
+<!--            android:orientation="vertical"-->
+<!--            android:padding="24dp"-->
+<!--            app:layout_constraintBottom_toTopOf="@+id/btn_sign_in"-->
+<!--            app:layout_constraintLeft_toLeftOf="parent"-->
+<!--            app:layout_constraintRight_toRightOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            app:layout_constraintVertical_bias="0.6"-->
+<!--            app:layout_constraintWidth_percent="0.8">-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/edt_email"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="54dp"-->
+<!--                android:layout_marginBottom="9dp"-->
+<!--                android:hint="@string/email_address"-->
+<!--                android:inputType="textEmailAddress"-->
+<!--                android:paddingStart="16dp"-->
+<!--                android:paddingEnd="16dp"-->
+<!--                android:text="@={vm.emailLiveData}"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent" />-->
+
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/edt_password"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="54dp"-->
+<!--                android:layout_marginTop="9dp"-->
+<!--                android:hint="@string/password"-->
+<!--                android:imeOptions="actionDone"-->
+<!--                android:inputType="textPassword"-->
+<!--                android:paddingStart="16dp"-->
+<!--                android:paddingEnd="16dp"-->
+<!--                android:text="@={vm.passwordLiveData}"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintLeft_toLeftOf="parent" />-->
+<!--        </LinearLayout>-->
+
+        <Button
+            android:id="@+id/btn_sign_in"
+            style="@style/Base.Button"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginBottom="36dp"
+            android:background="@color/color_purple_main"
+            android:elevation="0dp"
+            android:foregroundGravity="center"
+            android:gravity="center"
+            android:onClick="@{() -> vm.login()}"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/continue_text"
+            android:textAllCaps="false"
+            android:textColor="@color/color_white"
+            app:elevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/iv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:elevation="8dp"
+            android:indeterminateTint="@color/color_white"
+            android:indeterminateTintMode="src_atop"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_sign_in"
+            app:layout_constraintLeft_toLeftOf="@+id/btn_sign_in"
+            app:layout_constraintRight_toRightOf="@+id/btn_sign_in"
+            app:layout_constraintTop_toTopOf="@+id/btn_sign_in" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

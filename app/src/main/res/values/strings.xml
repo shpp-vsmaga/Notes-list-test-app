@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Notes List</string>
+    <string name="initialization">Initialization…</string>
+    <string name="sign_in_or_create_nw_account">Sign in or create new account</string>
+    <string name="continue_text">Continue</string>
+    <string name="logout">Logout</string>
+    <string name="are_you_sure_want_to_logout">Are you sure you want to log out?</string>
+    <string name="logout_message">You will be returned to starter screen</string>
+    <string name="save">Save</string>
+    <string name="progress">Progress</string>
+    <string name="delete">Delete</string>
+    <string name="edit_note">Edit note</string>
+    <string name="add_note">Add note</string>
+    <string name="offline_message">You’re offline. Check your connection.</string>
+</resources>
