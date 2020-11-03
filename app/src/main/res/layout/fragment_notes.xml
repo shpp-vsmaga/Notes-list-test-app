@@ -51,6 +51,7 @@
             android:onClick="@{() -> vm.addNote()}"
             android:src="@drawable/ic_plus_white"
             app:backgroundTint="@color/color_purple_main"
+            android:contentDescription="@string/add_note"
             app:layout_anchor="@id/rv_notes"
             app:layout_anchorGravity="bottom|right|end"
             app:layout_behavior="com.noteslist.app.common.ui.FabScrollBehavior"

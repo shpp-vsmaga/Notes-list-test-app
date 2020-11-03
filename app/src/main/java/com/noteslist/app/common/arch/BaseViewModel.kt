@@ -9,7 +9,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
 abstract class BaseViewModel : ViewModel() {
-    private val _progressVisible = MutableLiveData<Boolean>(false)
+    private val _progressVisible = MutableLiveData(false)
     val progressVisible: LiveData<Boolean>
         get() = _progressVisible
 

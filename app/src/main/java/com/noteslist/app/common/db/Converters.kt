@@ -1,8 +1,6 @@
 package com.noteslist.app.common.db
 
 import androidx.room.TypeConverter
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import org.joda.time.DateTime
 
 class Converters {

@@ -17,7 +17,7 @@ abstract class BaseViewHolder<T>(
 
     constructor(parent: ViewGroup, @LayoutRes layoutId: Int, listener: ((T) -> Unit)? = null) :
             this(LayoutInflater.from(parent.context).inflate(layoutId, parent, false), listener) {
-        lifecycleRegistry.markState(Lifecycle.State.INITIALIZED)
+        lifecycleRegistry.currentState = Lifecycle.State.INITIALIZED
     }
 
     private val lifecycleRegistry by lazy { LifecycleRegistry(this) }

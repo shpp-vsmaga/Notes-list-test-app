@@ -23,7 +23,7 @@ class ToolbarDelegate(private val fragment: Fragment) {
         }
     }
 
-    fun navigateUp() {
+    private fun navigateUp() {
         val onNavigateUp = toolbarNavigateUpListener?.onNavigateUp() ?: false
         if (!onNavigateUp) {
             val handled = getNavController()?.popBackStack() ?: false
@@ -47,12 +47,8 @@ class ToolbarDelegate(private val fragment: Fragment) {
         toolbar.setTitle(titleRes)
     }
 
-    fun setToolbarSubtitle(@StringRes titleRes: Int) {
-        toolbar.setSubtitle(titleRes)
-    }
-
     fun setToolbarTitle(title: String) {
-        toolbar.setTitle(title)
+        toolbar.title = title
     }
 
     fun inflateMenu(@MenuRes menuRes: Int): Menu? {

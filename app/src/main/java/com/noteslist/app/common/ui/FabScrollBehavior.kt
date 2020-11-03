@@ -3,6 +3,7 @@ package com.noteslist.app.common.ui
 import android.animation.Animator
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.LinearInterpolator
@@ -27,7 +28,7 @@ class FabScrollBehavior(context: Context, attrs: AttributeSet) :
     }
 
     private fun scheduleReturnTop(child: FloatingActionButton) {
-        if (handler == null) handler = Handler()
+        if (handler == null) handler = Handler(Looper.getMainLooper())
         handler?.postDelayed({
             val animator = child.animate().translationY(0f).setDuration(ANIMATION_DURATION)
                 .setInterpolator(LinearInterpolator())

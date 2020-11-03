@@ -78,7 +78,7 @@ abstract class BaseToolbarFragment<V : BaseViewModel, B : ViewDataBinding> :
         val color = R.color.color_white
         changeStatusBarColor(
             activity,
-            resources.getColor(color),
+            resources.getColor(color, activity.theme),
             lightStatusBar = isLight
         )
     }
