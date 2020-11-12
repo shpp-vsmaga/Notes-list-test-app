@@ -1,14 +1,16 @@
 package com.noteslist.app.common.arch
 
 
-import androidx.annotation.CallSuper
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.noteslist.app.BuildConfig
 import com.noteslist.app.common.livedata.SingleLiveEvent
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 abstract class BaseViewModel : ViewModel() {
@@ -26,8 +28,7 @@ abstract class BaseViewModel : ViewModel() {
             handleException(coroutineContext, throwable)
         }
 
-    private val job = SupervisorJob()
-    protected val uiScope = CoroutineScope(viewModelScope.coroutineContext + exceptionHandler)
+    protected val scope = CoroutineScope(viewModelScope.coroutineContext + exceptionHandler)
 
     open fun handleException(coroutineContext: CoroutineContext, error: Throwable) {
         if (BuildConfig.DEBUG) error.printStackTrace()
@@ -53,11 +54,11 @@ abstract class BaseViewModel : ViewModel() {
     }
 
 
-    protected fun showProgress() {
+    private fun showProgress() {
         _progressVisible.postValue(true)
     }
 
-    protected fun hideProgress() {
+    private fun hideProgress() {
         _progressVisible.postValue(false)
     }
 
