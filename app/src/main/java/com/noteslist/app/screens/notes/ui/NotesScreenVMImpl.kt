@@ -2,13 +2,13 @@ package com.noteslist.app.screens.notes.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.noteslist.app.auth.useCases.AuthUseCases
 import com.noteslist.app.common.livedata.SingleLiveEvent
 import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.notes.useCases.NotesUseCases
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 class NotesScreenVMImpl(
     private val authUseCases: AuthUseCases, private val notesUseCases: NotesUseCases
@@ -32,39 +32,26 @@ class NotesScreenVMImpl(
     }
 
     private fun fetchNotes() {
-        notesUseCases.fetchNotes()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({}, {
-                Timber.e(it)
-            })
-            .disposeOnCleared()
+        viewModelScope.launch {
+            notesUseCases.fetchNotes()
+        }
     }
 
     private fun getNotes() {
-        notesUseCases.getNotes()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _notesListData.value = it
-            }, {
-                Timber.e(it)
-            })
-            .disposeOnCleared()
+        runCoroutine {
+            notesUseCases.getNotes()
+                .collect {
+                    _notesListData.value = it
+                }
+        }
     }
 
     override fun logout() {
-        notesUseCases.clearLocalCache()
-            .andThen(authUseCases.logout())
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({
-                _notesScreenAction.value = Companion.NotesScreenAction.LOGOUT_SUCCESS
-            }, {
-                showError(it.message)
-            })
-            .disposeOnCleared()
-
+        runCoroutine {
+            notesUseCases.clearLocalCache()
+            authUseCases.logout()
+            _notesScreenAction.value = Companion.NotesScreenAction.LOGOUT_SUCCESS
+        }
     }
 
     override fun addNote() {

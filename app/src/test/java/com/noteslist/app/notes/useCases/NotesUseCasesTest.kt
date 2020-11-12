@@ -1,20 +1,21 @@
 package com.noteslist.app.notes.useCases
 
-import android.util.Log
 import com.noteslist.app.common.network.ConnectivityHelper
 import com.noteslist.app.helpers.TestData
 import com.noteslist.app.notes.gateway.NotesLocalGateway
 import com.noteslist.app.notes.gateway.NotesRemoteGateway
-import io.reactivex.Completable
-import io.reactivex.Flowable
-import io.reactivex.Single
 import junit.framework.TestCase
-import org.joda.time.DateTimeZone
-import org.joda.time.tz.UTCProvider
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.runBlocking
+import org.junit.Test
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
 
+@ExperimentalCoroutinesApi
 class NotesUseCasesTest : TestCase() {
     @Mock
     private lateinit var localGateway: NotesLocalGateway
@@ -30,49 +31,41 @@ class NotesUseCasesTest : TestCase() {
 
     public override fun setUp() {
         super.setUp()
-        //required for the correct instantiation of DateTime class
-        DateTimeZone.setProvider(UTCProvider())
-
         MockitoAnnotations.initMocks(this)
         notesUseCases = NotesUseCases(remoteGateway, localGateway, connectivityHelper)
     }
 
     //should return list of notes with valid data
+    @Test
     fun testGetNotesSuccess() {
         Mockito.`when`(localGateway.getNotes())
-            .thenReturn(Flowable.just(TestData.getNotesUiModels(TestData.notesValidData)))
-
-        val testObserver = notesUseCases.getNotes().test()
-        testObserver.assertValue(TestData.getNotesUiModels(TestData.notesValidData))
+            .thenReturn(flowOf(TestData.getNotesUiModels(TestData.notesValidData)))
+        runBlocking {
+            notesUseCases.getNotes().collect {
+                assertEquals(TestData.getNotesUiModels(TestData.notesValidData), it)
+            }
+        }
     }
 
-    //should return error with wrong data
     fun testGetNotesError() {
         Mockito.`when`(localGateway.getNotes())
-            .thenReturn(Flowable.unsafeCreate {
-                try {
-                    it.onNext(TestData.getNotesUiModels(TestData.notesWrongData))
-                } catch (e: Exception){
-                    it.onError(e)
-                }
-            })
-
-        notesUseCases.getNotes()
-            .subscribe({
-                assertNull(it)
-            },{
-                assertNotNull(it)
-            })
+            .thenReturn(callbackFlow { close(Exception("Test exception")) })
+        runBlocking {
+            try {
+                notesUseCases.getNotes().collect()
+            } catch (e: Exception) {
+                assertNotNull(e)
+            }
+        }
     }
 
     //should complete with success with valid data
+    @Test
     fun testFetchNotes() {
         Mockito.`when`(remoteGateway.getNotes())
-            .thenReturn(Single.just(TestData.getNotesUiModels(TestData.notesValidData)))
-        Mockito.`when`(localGateway.saveNotes(TestData.getNotesUiModels(TestData.notesValidData)))
-            .thenReturn(Completable.complete())
-
-        val testObserver = notesUseCases.fetchNotes().test()
-        testObserver.assertComplete()
+            .thenReturn(flowOf(TestData.getNotesUiModels(TestData.notesValidData)))
+        runBlocking {
+            notesUseCases.fetchNotes()
+        }
     }
 }

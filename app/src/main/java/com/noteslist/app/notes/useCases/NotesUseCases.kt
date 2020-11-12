@@ -5,8 +5,8 @@ import com.noteslist.app.common.network.ConnectivityHelper
 import com.noteslist.app.notes.gateway.NotesLocalGateway
 import com.noteslist.app.notes.gateway.NotesRemoteGateway
 import com.noteslist.app.notes.models.view.Note
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 
 /**
  * Contains all possible actions and business logic of Notes
@@ -19,85 +19,67 @@ class NotesUseCases(
 
     /**
      * Used to get actual list of notes
-     * @return RX Flowable will always contain actual data from the local storage
+     * @return  [Flow] will always contain actual data from the local storage
      */
-    fun getNotes(): Flowable<List<Note>> =
+    fun getNotes(): Flow<List<Note>> =
         notesLocalGateway.getNotes()
 
     /**
      * Used to force update of notes list in local storage from the remote
-     * @return RX Completable that signals about operation complete or error
      */
-    fun fetchNotes(): Completable =
+    suspend fun fetchNotes() {
         if (connectivityHelper.isOnline) {
-            notesRemoteGateway.getNotes()
-                .flatMapCompletable {
-                    notesLocalGateway.saveNotes(it)
-                }
-        } else {
-            Completable.complete()
+            val notes = notesRemoteGateway.getNotes()
+            notes.collect {
+                notesLocalGateway.saveNotes(it)
+            }
         }
+    }
 
     /**
      * Used to add new note
      * @param text of new note
-     * @return RX Completable that signals about operation complete or error
      */
-    fun addNote(text: String): Completable =
+    suspend fun addNote(text: String) {
         if (connectivityHelper.isOnline) {
-            notesRemoteGateway.addNote(text)
-                .flatMapCompletable {
-                    notesLocalGateway.saveNote(it)
-                }
+            val note = notesRemoteGateway.addNote(text)
+            notesLocalGateway.saveNote(note)
         } else {
-            Completable.error {
-                Exception(
-                    NetworkErrorException()
-                )
-            }
+            throw Exception(NetworkErrorException())
         }
+    }
+
 
     /**
      * Used to edit existing note
      * @param note - note model to be edited with new fields values
-     * @return RX Completable that signals about operation complete or error
      */
-    fun saveNote(note: Note): Completable =
+    suspend fun saveNote(note: Note) {
         if (connectivityHelper.isOnline) {
-            notesRemoteGateway.saveNote(note)
-                .flatMapCompletable {
-                    notesLocalGateway.saveNote(it)
-                }
+            val editedNote = notesRemoteGateway.saveNote(note)
+            notesLocalGateway.saveNote(editedNote)
         } else {
-            Completable.error {
-                Exception(
-                    NetworkErrorException()
-                )
-            }
+            throw Exception(NetworkErrorException())
         }
+    }
 
     /**
      * Used to delete existing note
      * @param id - id of the note model to be deleted
-     * @return RX Completable that signals about operation complete or error
      */
-    fun deleteNote(id: String): Completable =
+    suspend fun deleteNote(id: String) {
         if (connectivityHelper.isOnline) {
             notesRemoteGateway.deleteNote(id)
-                .andThen(notesLocalGateway.deleteNote(id))
+            notesLocalGateway.deleteNote(id)
         } else {
-            Completable.error {
-                Exception(
-                    NetworkErrorException()
-                )
-            }
+            throw Exception(NetworkErrorException())
         }
+    }
 
     /**
      * Used to clear local storage on logout
-     * @return RX Completable that signals about operation complete or error
      */
-    fun clearLocalCache(): Completable =
+    suspend fun clearLocalCache() =
         notesLocalGateway.deleteAll()
 
 }
