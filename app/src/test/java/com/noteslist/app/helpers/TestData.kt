@@ -2,7 +2,7 @@ package com.noteslist.app.helpers
 
 import com.noteslist.app.notes.models.db.NoteEntity
 import com.noteslist.app.notes.models.view.Note
-import org.joda.time.DateTime
+import java.util.*
 
 object TestData {
     private const val FIELD_ID = "id"
@@ -14,26 +14,17 @@ object TestData {
         "1" to mapOf(
             FIELD_ID to "1",
             FIELD_TEXT to "text1",
-            FIELD_CREATED_AT to DateTime(0)
+            FIELD_CREATED_AT to Date(0)
         ),
         "2" to mapOf(
             FIELD_ID to "2",
             FIELD_TEXT to "text2",
-            FIELD_CREATED_AT to DateTime(0)
+            FIELD_CREATED_AT to Date(0)
         ),
         "3" to mapOf(
             FIELD_ID to "3",
             FIELD_TEXT to "text3",
-            FIELD_CREATED_AT to DateTime(0)
-        )
-    )
-
-    //valid mocked test data representing Note model
-    val notesWrongData = mapOf(
-        "1" to mapOf(
-            FIELD_ID to 1,
-            FIELD_TEXT to 11f,
-            FIELD_CREATED_AT to DateTime(0)
+            FIELD_CREATED_AT to Date(0)
         )
     )
 
@@ -45,7 +36,7 @@ object TestData {
             NoteEntity(
                 id = it[FIELD_ID] as String,
                 text = it[FIELD_TEXT] as String,
-                createdAt = it[FIELD_CREATED_AT] as DateTime
+                createdAt = it[FIELD_CREATED_AT] as Date
             )
         }
 
@@ -57,7 +48,7 @@ object TestData {
             Note(
                 id = (it[FIELD_ID] as String),
                 text = (it[FIELD_TEXT] as String),
-                createdAt = (it[FIELD_CREATED_AT] as DateTime)
+                createdAt = (it[FIELD_CREATED_AT] as Date)
             )
         }
 

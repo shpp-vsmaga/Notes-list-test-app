@@ -2,17 +2,9 @@ package com.noteslist.app.notes.models
 
 import com.noteslist.app.helpers.TestData
 import junit.framework.TestCase
-import org.joda.time.DateTimeZone
-import org.joda.time.tz.UTCProvider
 import org.junit.Test
 
 class NotesMapperTest : TestCase() {
-
-    public override fun setUp() {
-        super.setUp()
-        //required for the correct instantiation of DateTime class
-        DateTimeZone.setProvider(UTCProvider())
-    }
 
     @Test
     fun testFromDatabase() {

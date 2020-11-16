@@ -5,26 +5,25 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.noteslist.app.notes.models.db.NoteEntity
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NotesDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(note: NoteEntity): Completable
+    suspend fun insert(note: NoteEntity)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(notes: List<NoteEntity>): Completable
+    suspend fun insert(notes: List<NoteEntity>)
 
     @Query(QUERY_REMOVE_SINGLE)
-    fun delete(id: String): Completable
+    suspend fun delete(id: String)
 
     @Query(QUERY_REMOVE_ALL)
-    fun deleteAll(): Completable
+    suspend fun deleteAll()
 
     @Query(QUERY_ALL_NOTES)
-    fun getAllFlowable(): Flowable<List<NoteEntity>>
+    fun getAllFlow(): Flow<List<NoteEntity>>
 
     companion object {
         private const val QUERY_ALL_NOTES = """

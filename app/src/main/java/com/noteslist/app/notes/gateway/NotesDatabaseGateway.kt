@@ -1,10 +1,10 @@
 package com.noteslist.app.notes.gateway
 
 import com.noteslist.app.notes.db.NotesDao
-import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.notes.models.NotesMapper
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import com.noteslist.app.notes.models.view.Note
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 /**
  * Implementation of NotesLocalGateway based on the Room ORM
@@ -15,20 +15,20 @@ class NotesDatabaseGateway(private val notesDao: NotesDao) : NotesLocalGateway {
      * Flowable will always contain the actual data from DB if it was changed with
      * the save instance
      */
-    override fun getNotes(): Flowable<List<Note>> =
-        notesDao.getAllFlowable().map {
+    override fun getNotes(): Flow<List<Note>> =
+        notesDao.getAllFlow().map {
             NotesMapper.fromDatabase(it)
         }
 
-    override fun saveNotes(notes: List<Note>): Completable =
+    override suspend fun saveNotes(notes: List<Note>) =
         notesDao.insert(NotesMapper.toDatabase(notes))
 
-    override fun saveNote(note: Note): Completable =
+    override suspend fun saveNote(note: Note) =
         notesDao.insert(NotesMapper.toDatabase(note))
 
-    override fun deleteNote(id: String): Completable =
+    override suspend fun deleteNote(id: String) =
         notesDao.delete(id)
 
-    override fun deleteAll(): Completable =
+    override suspend fun deleteAll() =
         notesDao.deleteAll()
 }
