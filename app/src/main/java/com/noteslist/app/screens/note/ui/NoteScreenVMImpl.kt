@@ -8,9 +8,7 @@ import com.noteslist.app.common.livedata.SizeRangeTextLiveData
 import com.noteslist.app.common.livedata.TextChangedLiveData
 import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.notes.useCases.NotesUseCases
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
+import kotlin.coroutines.CoroutineContext
 
 class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM() {
 
@@ -32,6 +30,15 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
     private val _textChangedData = TextChangedLiveData(noteTextData, originalTextData)
     override val textChangedData: LiveData<Boolean>
         get() = _textChangedData
+
+    override fun handleException(coroutineContext: CoroutineContext, error: Throwable) {
+        if (error.cause is NetworkErrorException) {
+            _noteScreenAction.value =
+                Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
+        } else {
+            showError(error.message)
+        }
+    }
 
     override fun setNote(note: Note?) {
         if (note != null) {
@@ -58,72 +65,30 @@ class NoteScreenVMImpl(private val notesUseCases: NotesUseCases) : NoteScreenVM(
         noteData.value?.let { note ->
             text?.let {
                 val editedNote = note.copy(text = text)
-                notesUseCases.saveNote(editedNote)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .doOnSubscribe { showProgress() }
-                    .doOnComplete { hideProgress() }
-                    .doOnError { hideProgress() }
-                    .subscribe({
-                        _noteData.value = editedNote
-                        _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
-                    }, { error ->
-                        if (error.cause is NetworkErrorException) {
-                            _noteScreenAction.value =
-                                Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
-                        } else {
-                            showError(error.message)
-                        }
-                        Timber.e(error)
-                    })
-                    .disposeOnCleared()
+                runCoroutine(withProgress = true) {
+                    notesUseCases.saveNote(editedNote)
+                    _noteData.value = editedNote
+                    _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
+                }
             }
         }
     }
 
     private fun addNewNote(text: String?) {
         text?.let {
-            notesUseCases.addNote(text)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showProgress() }
-                .doOnComplete { hideProgress() }
-                .doOnError { hideProgress() }
-                .subscribe({
-                    _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
-                }, { error ->
-                    if (error.cause is NetworkErrorException) {
-                        _noteScreenAction.value =
-                            Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
-                    } else {
-                        showError(error.message)
-                    }
-                    Timber.e(error)
-                })
-                .disposeOnCleared()
+            runCoroutine(withProgress = true) {
+                notesUseCases.addNote(text)
+                _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
+            }
         }
     }
 
     override fun deleteNote() {
         noteData.value?.let { note ->
-            notesUseCases.deleteNote(note.id)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe { showProgress() }
-                .doOnComplete { hideProgress() }
-                .doOnError { hideProgress() }
-                .subscribe({
-                    _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
-                }, { error ->
-                    if (error.cause is NetworkErrorException) {
-                        _noteScreenAction.value =
-                            Companion.NoteScreenAction.SHOW_OFFLINE_MESSAGE
-                    } else {
-                        showError(error.message)
-                    }
-                    Timber.e(error)
-                })
-                .disposeOnCleared()
+            runCoroutine(withProgress = true) {
+                notesUseCases.deleteNote(note.id)
+                _noteScreenAction.value = Companion.NoteScreenAction.CLOSE
+            }
         }
     }
 }

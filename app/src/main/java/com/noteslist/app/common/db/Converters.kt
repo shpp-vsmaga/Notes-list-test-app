@@ -1,7 +1,7 @@
 package com.noteslist.app.common.db
 
 import androidx.room.TypeConverter
-import org.joda.time.DateTime
+import java.util.*
 
 /**
  * Contains converter functions for Room for not supported data types in SQLite
@@ -9,12 +9,12 @@ import org.joda.time.DateTime
 class Converters {
 
     @TypeConverter
-    fun fromTimestamp(value: Long?): DateTime? {
-        return value?.let { DateTime(it) }
+    fun fromTimestamp(value: Long?): Date? {
+        return value?.let { Date(it) }
     }
 
     @TypeConverter
-    fun dateToTimestamp(date: DateTime?): Long? {
-        return date?.millis
+    fun dateToTimestamp(date: Date?): Long? {
+        return date?.time
     }
 }
