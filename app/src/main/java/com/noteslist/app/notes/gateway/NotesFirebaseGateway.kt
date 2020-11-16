@@ -58,7 +58,6 @@ class NotesFirebaseGateway(
             }
         }
 
-
     override suspend fun addNote(text: String): Note =
         suspendCancellableCoroutine { continuation ->
             val userId = firebaseAuth.currentUser?.uid

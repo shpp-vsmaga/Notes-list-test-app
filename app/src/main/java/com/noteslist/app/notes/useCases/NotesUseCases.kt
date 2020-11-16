@@ -5,8 +5,10 @@ import com.noteslist.app.common.network.ConnectivityHelper
 import com.noteslist.app.notes.gateway.NotesLocalGateway
 import com.noteslist.app.notes.gateway.NotesRemoteGateway
 import com.noteslist.app.notes.models.view.Note
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.withContext
 
 /**
  * Contains all possible actions and business logic of Notes
@@ -31,7 +33,9 @@ class NotesUseCases(
         if (connectivityHelper.isOnline) {
             val notes = notesRemoteGateway.getNotes()
             notes.collect {
-                notesLocalGateway.saveNotes(it)
+                withContext(Dispatchers.IO) {
+                    notesLocalGateway.saveNotes(it)
+                }
             }
         }
     }
@@ -43,7 +47,9 @@ class NotesUseCases(
     suspend fun addNote(text: String) {
         if (connectivityHelper.isOnline) {
             val note = notesRemoteGateway.addNote(text)
-            notesLocalGateway.saveNote(note)
+            withContext(Dispatchers.IO) {
+                notesLocalGateway.saveNote(note)
+            }
         } else {
             throw Exception(NetworkErrorException())
         }
@@ -57,7 +63,9 @@ class NotesUseCases(
     suspend fun saveNote(note: Note) {
         if (connectivityHelper.isOnline) {
             val editedNote = notesRemoteGateway.saveNote(note)
-            notesLocalGateway.saveNote(editedNote)
+            withContext(Dispatchers.IO) {
+                notesLocalGateway.saveNote(editedNote)
+            }
         } else {
             throw Exception(NetworkErrorException())
         }
@@ -70,7 +78,9 @@ class NotesUseCases(
     suspend fun deleteNote(id: String) {
         if (connectivityHelper.isOnline) {
             notesRemoteGateway.deleteNote(id)
-            notesLocalGateway.deleteNote(id)
+            withContext(Dispatchers.IO) {
+                notesLocalGateway.deleteNote(id)
+            }
         } else {
             throw Exception(NetworkErrorException())
         }
@@ -79,7 +89,10 @@ class NotesUseCases(
     /**
      * Used to clear local storage on logout
      */
-    suspend fun clearLocalCache() =
-        notesLocalGateway.deleteAll()
+    suspend fun clearLocalCache() {
+        withContext(Dispatchers.IO) {
+            notesLocalGateway.deleteAll()
+        }
+    }
 
 }

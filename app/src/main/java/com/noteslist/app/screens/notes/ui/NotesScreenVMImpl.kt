@@ -2,13 +2,11 @@ package com.noteslist.app.screens.notes.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import com.noteslist.app.auth.useCases.AuthUseCases
 import com.noteslist.app.common.livedata.SingleLiveEvent
 import com.noteslist.app.notes.models.view.Note
 import com.noteslist.app.notes.useCases.NotesUseCases
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class NotesScreenVMImpl(
     private val authUseCases: AuthUseCases, private val notesUseCases: NotesUseCases
@@ -32,7 +30,7 @@ class NotesScreenVMImpl(
     }
 
     private fun fetchNotes() {
-        viewModelScope.launch {
+        runCoroutine {
             notesUseCases.fetchNotes()
         }
     }

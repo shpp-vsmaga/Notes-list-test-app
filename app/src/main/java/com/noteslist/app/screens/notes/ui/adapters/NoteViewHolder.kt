@@ -5,6 +5,8 @@ import com.noteslist.app.R
 import com.noteslist.app.common.ui.BaseViewHolder
 import com.noteslist.app.notes.models.view.Note
 import kotlinx.android.synthetic.main.item_note.view.*
+import java.text.SimpleDateFormat
+import java.util.*
 
 class NoteViewHolder(
     viewGroup: ViewGroup,
@@ -17,5 +19,11 @@ class NoteViewHolder(
             clickListener.invoke(item)
         }
         itemView.tv_text.text = item.text
+        itemView.tv_date.text = getFormattedDate(item.createdAt)
+    }
+
+    private fun getFormattedDate(date: Date): String {
+        val format = SimpleDateFormat("dd MMMM, yyyy HH:mm", Locale.ENGLISH)
+        return format.format(date)
     }
 }
